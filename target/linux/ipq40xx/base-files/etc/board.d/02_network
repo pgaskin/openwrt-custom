@@ -56,7 +56,6 @@ ipq40xx_setup_interfaces()
 		;;
 	asus,rt-ac42u|\
 	asus,rt-ac58u|\
-	mikrotik,hap-ac2|\
 	mikrotik,hap-ac3|\
 	p2w,r619ac-64m|\
 	p2w,r619ac-128m|\
@@ -64,6 +63,10 @@ ipq40xx_setup_interfaces()
 		ucidef_set_interfaces_lan_wan "eth0" "eth1"
 		ucidef_add_switch "switch0" \
 			"0u@eth0" "1:lan:4" "2:lan:3" "3:lan:2" "4:lan:1"
+		;;
+	mikrotik,hap-ac2)
+		ucidef_add_switch "switch0" \
+			"0t@eth0" "1:lan:4" "2:lan:3" "3:lan:2" "4:lan:1" "5:wan"
 		;;
 	avm,fritzbox-4040|\
 	linksys,ea6350v3|\

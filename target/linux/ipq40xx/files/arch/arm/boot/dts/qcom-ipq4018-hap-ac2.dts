@@ -85,6 +85,8 @@
 
 		edma@c080000 {
 			status = "okay";
+			qcom,poll_required = <0>;
+			qcom,num_gmac = <1>;
 		};
 	};
 
@@ -270,4 +272,8 @@
 	status = "okay";
 
 	qcom,ath10k-calibration-variant = "MikroTik-hAP-ac2";
+};
+
+&gmac0 {
+	vlan_tag = <0 0x3f>;
 };

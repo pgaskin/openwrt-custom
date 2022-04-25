@@ -727,7 +727,7 @@ static u16 edma_rx_complete(struct edma_common_info *edma_cinfo,
 			edma_receive_checksum(rd, skb);
 
 			/* Process VLAN HW acceleration indication provided by HW */
-			if (unlikely(adapter->default_vlan_tag != rd->rrd4)) {
+			if (likely(adapter->default_vlan_tag != rd->rrd4)) {
 				vlan = rd->rrd4;
 				if (likely(rd->rrd7 & EDMA_RRD_CVLAN))
 					__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q), vlan);
