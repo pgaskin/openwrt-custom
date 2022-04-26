@@ -1478,16 +1478,24 @@ static int
 ar40xx_vlan_init(struct ar40xx_priv *priv)
 {
 	int port;
+	int tmp;
 	unsigned long bmp;
 
 	/* By default Enable VLAN */
 	priv->vlan = 1;
-	priv->vlan_table[AR40XX_LAN_VLAN] = priv->cpu_bmp | priv->lan_bmp;
+	priv->vlan_table[AR40XX_LAN_VLAN] = priv->cpu_bmp;
 	priv->vlan_table[AR40XX_WAN_VLAN] = priv->cpu_bmp | priv->wan_bmp;
 	priv->vlan_tagged = priv->cpu_bmp;
+
+	/* HACK: Isolate the LAN ports by default by assigning them consecutive VLANs (skipping the WAN VLAN) */
+	tmp = AR40XX_LAN_VLAN;
 	bmp = priv->lan_bmp;
-	for_each_set_bit(port, &bmp, AR40XX_NUM_PORTS)
-			priv->pvid[port] = AR40XX_LAN_VLAN;
+	for_each_set_bit(port, &bmp, AR40XX_NUM_PORTS) {
+			priv->vlan_table[tmp] = priv->cpu_bmp | (1 << port);
+			priv->pvid[port] = tmp;
+			if (++tmp == AR40XX_WAN_VLAN)
+				++tmp;
+	}
 
 	bmp = priv->wan_bmp;
 	for_each_set_bit(port, &bmp, AR40XX_NUM_PORTS)
