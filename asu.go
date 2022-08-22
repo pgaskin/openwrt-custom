@@ -28,6 +28,7 @@ var (
 		"6rd", "6in4",
 		"ppp", "luci-proto-ppp", "ppp-mod-pppoe",
 		"kmod-wireguard", "wireguard-tools", "luci-app-wireguard", "luci-proto-wireguard",
+		"kmod-usb-net-rndis", "kmod-usb-net-cdc-ncm",
 		"gre", "luci-proto-gre",
 		"ipip", "luci-proto-ipip",
 		"vxlan", "luci-proto-vxlan",
@@ -43,10 +44,20 @@ var (
 		"prometheus-node-exporter-lua-openwrt", "prometheus-node-exporter-lua-uci_dhcp_host",
 	}
 	devices = [][2]string{
-		{"ipq40xx/mikrotik", "mikrotik_hap-ac2"},
+		//{"ipq40xx/mikrotik", "mikrotik_hap-ac2"},
 		{"ath79/generic", "tplink_archer-c7-v4"},
 		{"ath79/generic", "tplink_archer-c7-v5"},
 		{"mediatek/mt7622", "linksys_e8450-ubi"},
+	}
+	extraPackages = map[[2]string][]string{
+		{"ath79/generic", "tplink_archer-c7-v4"}: {
+			"-ath10k-firmware-qca988x-ct", "ath10k-firmware-qca988x",
+			"-kmod-ath10k-ct", "kmod-ath10k",
+		},
+		{"ath79/generic", "tplink_archer-c7-v5"}: {
+			"-ath10k-firmware-qca988x-ct", "ath10k-firmware-qca988x",
+			"-kmod-ath10k-ct", "kmod-ath10k",
+		},
 	}
 )
 
@@ -101,7 +112,7 @@ func main() {
 
 	dch := []chan any{}
 	for _, dev := range devices {
-		dch = append(dch, asu(ctx, version, dev[0], dev[1], packages...))
+		dch = append(dch, asu(ctx, version, dev[0], dev[1], append(append([]string{}, packages...), extraPackages[dev]...)...))
 	}
 
 	sci := make([]int, len(dch))
