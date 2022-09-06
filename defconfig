@@ -1,0 +1,130 @@
+CONFIG_TARGET_ipq40xx=y
+CONFIG_TARGET_ipq40xx_mikrotik=y
+CONFIG_TARGET_MULTI_PROFILE=y
+CONFIG_TARGET_DEVICE_ipq40xx_mikrotik_DEVICE_mikrotik_cap-ac=y
+CONFIG_TARGET_DEVICE_PACKAGES_ipq40xx_mikrotik_DEVICE_mikrotik_cap-ac=""
+CONFIG_TARGET_DEVICE_ipq40xx_mikrotik_DEVICE_mikrotik_hap-ac2=y
+CONFIG_TARGET_DEVICE_PACKAGES_ipq40xx_mikrotik_DEVICE_mikrotik_hap-ac2=""
+CONFIG_TARGET_DEVICE_ipq40xx_mikrotik_DEVICE_mikrotik_hap-ac3=y
+CONFIG_TARGET_DEVICE_PACKAGES_ipq40xx_mikrotik_DEVICE_mikrotik_hap-ac3=""
+CONFIG_TARGET_DEVICE_ipq40xx_mikrotik_DEVICE_mikrotik_sxtsq-5-ac=y
+CONFIG_TARGET_DEVICE_PACKAGES_ipq40xx_mikrotik_DEVICE_mikrotik_sxtsq-5-ac=""
+CONFIG_TARGET_DEVICE_ipq40xx_mikrotik_DEVICE_mikrotik_wap-ac=y
+CONFIG_TARGET_DEVICE_PACKAGES_ipq40xx_mikrotik_DEVICE_mikrotik_wap-ac=""
+CONFIG_TARGET_DEVICE_ipq40xx_mikrotik_DEVICE_mikrotik_lhgg-60ad=y
+CONFIG_TARGET_DEVICE_PACKAGES_ipq40xx_mikrotik_DEVICE_mikrotik_lhgg-60ad=""
+CONFIG_ALL_KMODS=y
+CONFIG_ALL_NONSHARED=y
+CONFIG_DEVEL=y
+CONFIG_TARGET_PER_DEVICE_ROOTFS=y
+CONFIG_AUTOREMOVE=y
+CONFIG_BPF_TOOLCHAIN_BUILD_LLVM=y
+# CONFIG_BPF_TOOLCHAIN_NONE is not set
+CONFIG_BUILDBOT=y
+CONFIG_COLLECT_KERNEL_DEBUG=y
+CONFIG_HAS_BPF_TOOLCHAIN=y
+CONFIG_IB=y
+CONFIG_KERNEL_BUILD_DOMAIN="buildhost"
+CONFIG_KERNEL_BUILD_USER="builder"
+CONFIG_MAKE_TOOLCHAIN=y
+CONFIG_PACKAGE_libbpf=m
+CONFIG_PACKAGE_libelf=m
+CONFIG_PACKAGE_libpcap=m
+CONFIG_PACKAGE_libxdp=m
+CONFIG_PACKAGE_qosify=m
+CONFIG_PACKAGE_tc-tiny=m
+CONFIG_PACKAGE_xdp-filter=m
+CONFIG_PACKAGE_xdp-loader=m
+CONFIG_PACKAGE_xdpdump=m
+CONFIG_PACKAGE_zlib=m
+CONFIG_REPRODUCIBLE_DEBUG_INFO=y
+CONFIG_SDK=y
+CONFIG_SDK_LLVM_BPF=y
+CONFIG_TARGET_ALL_PROFILES=y
+CONFIG_USE_LLVM_BUILD=y
+
+# CONFIG_TARGET_DEVICE_ipq40xx_mikrotik_DEVICE_mikrotik_cap-ac is not set
+# CONFIG_TARGET_DEVICE_PACKAGES_ipq40xx_mikrotik_DEVICE_mikrotik_cap-ac is not set
+# CONFIG_TARGET_DEVICE_ipq40xx_mikrotik_DEVICE_mikrotik_hap-ac3 is not set
+# CONFIG_TARGET_DEVICE_PACKAGES_ipq40xx_mikrotik_DEVICE_mikrotik_hap-ac3 is not set
+# CONFIG_TARGET_DEVICE_ipq40xx_mikrotik_DEVICE_mikrotik_sxtsq-5-ac is not set
+# CONFIG_TARGET_DEVICE_PACKAGES_ipq40xx_mikrotik_DEVICE_mikrotik_sxtsq-5-ac is not set
+# CONFIG_TARGET_DEVICE_ipq40xx_mikrotik_DEVICE_mikrotik_wap-ac is not set
+# CONFIG_TARGET_DEVICE_PACKAGES_ipq40xx_mikrotik_DEVICE_mikrotik_wap-ac is not set
+# CONFIG_TARGET_DEVICE_ipq40xx_mikrotik_DEVICE_mikrotik_lhgg-60ad is not set
+# CONFIG_TARGET_DEVICE_PACKAGES_ipq40xx_mikrotik_DEVICE_mikrotik_lhgg-60ad is not set
+# CONFIG_ALL_KMODS is not set
+# CONFIG_ALL_NONSHARED is not set
+# CONFIG_DEVEL is not set
+# CONFIG_BUILDBOT is not set
+# CONFIG_COLLECT_KERNEL_DEBUG is not set
+# CONFIG_IB is not set
+# CONFIG_IMAGEOPT is not set
+# CONFIG_SDK is not set
+# CONFIG_SDK_LLVM_BPF is not set
+# CONFIG_TARGET_ALL_PROFILES is not set
+
+CONFIG_BPF_TOOLCHAIN_BUILD_LLVM=y
+
+CONFIG_PACKAGE_luci=y
+CONFIG_PACKAGE_luci-theme-openwrt=y
+CONFIG_PACKAGE_luci-mod-admin-full=y
+CONFIG_PACKAGE_luci-app-firewall=y
+CONFIG_PACKAGE_libustream-openssl=y
+CONFIG_PACKAGE_kmod-macvlan=y
+CONFIG_PACKAGE_6rd=y
+CONFIG_PACKAGE_6in4=y
+CONFIG_PACKAGE_ppp=y
+CONFIG_PACKAGE_luci-proto-ppp=y
+CONFIG_PACKAGE_ppp-mod-pppoe=y
+CONFIG_PACKAGE_kmod-wireguard=y
+CONFIG_PACKAGE_wireguard-tools=y
+CONFIG_PACKAGE_luci-app-wireguard=y
+CONFIG_PACKAGE_luci-proto-wireguard=y
+CONFIG_PACKAGE_kmod-usb-net-rndis=y
+CONFIG_PACKAGE_kmod-usb-net-cdc-ncm=y
+CONFIG_PACKAGE_gre=y
+CONFIG_PACKAGE_luci-proto-gre=y
+CONFIG_PACKAGE_ipip=y
+CONFIG_PACKAGE_luci-proto-ipip=y
+CONFIG_PACKAGE_vxlan=y
+CONFIG_PACKAGE_luci-proto-vxlan=y
+CONFIG_PACKAGE_wpad-openssl=y
+CONFIG_PACKAGE_ddns-scripts=y
+CONFIG_PACKAGE_luci-app-ddns=y
+CONFIG_PACKAGE_qosify=y
+CONFIG_PACKAGE_usteer=y
+CONFIG_PACKAGE_umdns=y
+CONFIG_PACKAGE_tcpdump=y
+CONFIG_PACKAGE_iperf3=y
+CONFIG_PACKAGE_ss=y
+CONFIG_PACKAGE_knot-host=y
+CONFIG_PACKAGE_knot-dig=y
+CONFIG_PACKAGE_curl=y
+CONFIG_PACKAGE_tc-full=y
+CONFIG_PACKAGE_ip-full=y
+CONFIG_PACKAGE_iw-full=y
+CONFIG_PACKAGE_nano=y
+CONFIG_PACKAGE_htop=y
+CONFIG_PACKAGE_ncdu=y
+CONFIG_PACKAGE_xxd=y
+CONFIG_PACKAGE_strace=y
+CONFIG_PACKAGE_htop=y
+CONFIG_PACKAGE_jq=y
+CONFIG_PACKAGE_netcat=y
+CONFIG_PACKAGE_nmap=y
+CONFIG_PACKAGE_mtr=y
+CONFIG_PACKAGE_conntrack=y
+CONFIG_PACKAGE_iputils-ping=y
+CONFIG_PACKAGE_iputils-arping=y
+CONFIG_PACKAGE_socat=y
+CONFIG_PACKAGE_ip-bridge=y
+CONFIG_PACKAGE_muninlite=y
+CONFIG_PACKAGE_prometheus-node-exporter-lua=y
+CONFIG_PACKAGE_prometheus-node-exporter-lua-wifi=y
+CONFIG_PACKAGE_prometheus-node-exporter-lua-wifi_stations=y
+CONFIG_PACKAGE_prometheus-node-exporter-lua-openwrt=y
+CONFIG_PACKAGE_prometheus-node-exporter-lua-uci_dhcp_host=y
+# CONFIG_PACKAGE_luci-theme-bootstrap is not set
+# CONFIG_PACKAGE_libustream-wolfssl is not set
+# CONFIG_PACKAGE_wpad-basic-wolfssl is not set
