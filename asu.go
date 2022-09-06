@@ -19,7 +19,7 @@ import (
 var (
 	dir      = "img"
 	server   = "https://sysupgrade.openwrt.org"
-	version  = "22.03.0-rc6"
+	version  = "22.03.0"
 	packages = []string{
 		"luci", "-luci-theme-bootstrap", "luci-theme-openwrt",
 		"luci-mod-admin-full", "luci-app-firewall",
@@ -36,9 +36,10 @@ var (
 		"ddns-scripts", "luci-app-ddns",
 		"qosify",
 		"usteer",
+		"umdns",
 		"tcpdump", "iperf3", "ss", "knot-host", "knot-dig", "curl", "tc-full", "ip-full", "iw-full",
 		"nano", "htop", "ncdu", "xxd", "strace", "htop", "jq", "netcat", "nmap", "mtr",
-		"conntrack", "iputils-ping", "iputils-arping", "socat",
+		"conntrack", "iputils-ping", "iputils-arping", "socat", "ip-bridge",
 		"muninlite",
 		"prometheus-node-exporter-lua", "prometheus-node-exporter-lua-wifi", "prometheus-node-exporter-lua-wifi_stations",
 		"prometheus-node-exporter-lua-openwrt", "prometheus-node-exporter-lua-uci_dhcp_host",
