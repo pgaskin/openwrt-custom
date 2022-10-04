@@ -45,7 +45,7 @@ var (
 		"prometheus-node-exporter-lua-openwrt", "prometheus-node-exporter-lua-uci_dhcp_host",
 	}
 	devices = [][2]string{
-		//{"ipq40xx/mikrotik", "mikrotik_hap-ac2"},
+		{"ipq40xx/mikrotik", "mikrotik_hap-ac2"},
 		{"ath79/generic", "tplink_archer-c7-v4"},
 		{"ath79/generic", "tplink_archer-c7-v5"},
 		{"mediatek/mt7622", "linksys_e8450-ubi"},
@@ -59,6 +59,9 @@ var (
 			"-ath10k-firmware-qca988x-ct", "ath10k-firmware-qca988x",
 			"-kmod-ath10k-ct", "kmod-ath10k",
 		},
+	}
+	snapshotTargets = map[string]bool{
+		"ipq40xx/mikrotik": true,
 	}
 )
 
@@ -113,7 +116,13 @@ func main() {
 
 	dch := []chan any{}
 	for _, dev := range devices {
-		dch = append(dch, asu(ctx, version, dev[0], dev[1], append(append([]string{}, packages...), extraPackages[dev]...)...))
+		var vr string
+		if snapshotTargets[dev[0]] {
+			vr = "SNAPSHOT"
+		} else {
+			vr = version
+		}
+		dch = append(dch, asu(ctx, vr, dev[0], dev[1], append(append([]string{}, packages...), extraPackages[dev]...)...))
 	}
 
 	sci := make([]int, len(dch))
