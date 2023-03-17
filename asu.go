@@ -13,13 +13,14 @@ import (
 	"os"
 	"os/signal"
 	"reflect"
+	"strings"
 	"time"
 )
 
 var (
 	dir      = "img"
 	server   = "https://sysupgrade.openwrt.org"
-	version  = "22.03.0"
+	version  = "22.03.3"
 	packages = []string{
 		"luci", "-luci-theme-bootstrap", "luci-theme-openwrt",
 		"luci-mod-admin-full", "luci-app-firewall",
@@ -62,6 +63,9 @@ var (
 	}
 	snapshotTargets = map[string]bool{
 		"ipq40xx/mikrotik": true,
+	}
+	snapshotReleaseTargets = map[string]bool{
+		"mediatek/mt7622": true,
 	}
 )
 
@@ -119,6 +123,8 @@ func main() {
 		var vr string
 		if snapshotTargets[dev[0]] {
 			vr = "SNAPSHOT"
+		} else if snapshotReleaseTargets[dev[0]] {
+			vr = version[:strings.LastIndex(version, ".")] + "-SNAPSHOT"
 		} else {
 			vr = version
 		}
