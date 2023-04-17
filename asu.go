@@ -20,7 +20,7 @@ import (
 var (
 	dir      = "img"
 	server   = "https://sysupgrade.openwrt.org"
-	version  = "22.03.3"
+	version  = "22.03.4"
 	packages = []string{
 		"luci", "-luci-theme-bootstrap", "luci-theme-openwrt",
 		"luci-mod-admin-full", "luci-app-firewall",
@@ -60,12 +60,14 @@ var (
 			"-ath10k-firmware-qca988x-ct", "ath10k-firmware-qca988x",
 			"-kmod-ath10k-ct", "kmod-ath10k",
 		},
+		{"mediatek/mt7622", "linksys_e8450-ubi"}: {
+			"tailscale",
+		},
 	}
 	snapshotTargets = map[string]bool{
 		"ipq40xx/mikrotik": true,
 	}
 	snapshotReleaseTargets = map[string]bool{
-		"mediatek/mt7622": true,
 	}
 )
 
