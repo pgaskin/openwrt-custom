@@ -30,6 +30,7 @@ var (
 		"ppp", "luci-proto-ppp", "ppp-mod-pppoe",
 		"kmod-wireguard", "wireguard-tools", "luci-app-wireguard", "luci-proto-wireguard",
 		"kmod-usb-net-rndis", "kmod-usb-net-cdc-ncm",
+		"relayd", "luci-proto-relay",
 		"gre", "luci-proto-gre",
 		"ipip", "luci-proto-ipip",
 		"vxlan", "luci-proto-vxlan",
@@ -59,9 +60,6 @@ var (
 		{"ath79/generic", "tplink_archer-c7-v5"}: {
 			"-ath10k-firmware-qca988x-ct", "ath10k-firmware-qca988x",
 			"-kmod-ath10k-ct", "kmod-ath10k",
-		},
-		{"mediatek/mt7622", "linksys_e8450-ubi"}: {
-			"tailscale",
 		},
 	}
 	snapshotTargets = map[string]bool{
