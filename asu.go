@@ -20,7 +20,7 @@ import (
 var (
 	dir      = "img"
 	server   = "https://sysupgrade.openwrt.org"
-	version  = "22.03.4"
+	version  = "22.03.5"
 	packages = []string{
 		"luci", "-luci-theme-bootstrap", "luci-theme-openwrt",
 		"luci-mod-admin-full", "luci-app-firewall",
@@ -31,11 +31,13 @@ var (
 		"kmod-wireguard", "wireguard-tools", "luci-app-wireguard", "luci-proto-wireguard",
 		"kmod-usb-net-rndis", "kmod-usb-net-cdc-ncm",
 		"relayd", "luci-proto-relay",
+		"kmod-trelay",
 		"gre", "luci-proto-gre",
 		"ipip", "luci-proto-ipip",
 		"vxlan", "luci-proto-vxlan",
 		"-wpad-basic-wolfssl", "wpad-openssl",
 		"ddns-scripts", "luci-app-ddns",
+		"miniupnpc",
 		"qosify",
 		"usteer",
 		"umdns",
@@ -63,7 +65,7 @@ var (
 		},
 	}
 	snapshotTargets = map[string]bool{
-		"ipq40xx/mikrotik": true,
+		"ipq40xx/mikrotik": true, // DSA
 	}
 	snapshotReleaseTargets = map[string]bool{
 	}
