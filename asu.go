@@ -67,8 +67,7 @@ var (
 	snapshotTargets = map[string]bool{
 		"ipq40xx/mikrotik": true, // DSA
 	}
-	snapshotReleaseTargets = map[string]bool{
-	}
+	snapshotReleaseTargets = map[string]bool{}
 )
 
 func main() {
@@ -336,10 +335,12 @@ func asu1(ctx context.Context, ch chan any, version, target, profile string, pac
 }
 
 type BuildRequest struct {
-	Version  string   `json:"version"`
-	Profile  string   `json:"profile"`
-	Target   string   `json:"target"`
-	Packages []string `json:"packages"`
+	Version      string   `json:"version"`
+	Profile      string   `json:"profile"`
+	Target       string   `json:"target"`
+	Packages     []string `json:"packages"`
+	DiffPackages bool     `json:"diff_packages"`
+	Defaults     string   `json:"defaults"`
 }
 
 type BuildStatus struct {
@@ -400,10 +401,11 @@ type BuildResponse struct {
 
 func asu1req(ctx context.Context, version, target, profile string, packages ...string) (any, error) {
 	buf, err := json.Marshal(BuildRequest{
-		Version:  version,
-		Profile:  profile,
-		Target:   target,
-		Packages: packages,
+		Version:      version,
+		Profile:      profile,
+		Target:       target,
+		Packages:     packages,
+		DiffPackages: true,
 	})
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, server+"/api/v1/build", bytes.NewReader(buf))
