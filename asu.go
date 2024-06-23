@@ -18,35 +18,39 @@ import (
 )
 
 var (
-	dir      = "img"
-	server   = "https://sysupgrade.openwrt.org"
-	version  = "22.03.5"
+	dir         = "img"
+	server      = "https://sysupgrade.openwrt.org"
+	serverStore = "https://sysupgrade.openwrt.org/store"
+	//	server      = "http://10.33.0.139:8123"
+	//	serverStore = "http://10.33.0.139:8000/store"
+	version  = "23.05.3"
 	packages = []string{
 		"luci", "-luci-theme-bootstrap", "luci-theme-openwrt",
 		"luci-mod-admin-full", "luci-app-firewall",
-		"-libustream-wolfssl", "libustream-openssl",
+		"-libustream-mbedtls", "libustream-openssl",
 		"kmod-macvlan",
 		"6rd", "6in4",
 		"ppp", "luci-proto-ppp", "ppp-mod-pppoe",
 		"kmod-wireguard", "wireguard-tools", "luci-app-wireguard", "luci-proto-wireguard",
-		"kmod-usb-net-rndis", "kmod-usb-net-cdc-ncm",
+		"kmod-usb-net-rndis", "kmod-usb-net-cdc-ncm", "kmod-usb-net-cdc-ether",
 		"relayd", "luci-proto-relay",
 		"kmod-trelay",
 		"gre", "luci-proto-gre",
 		"ipip", "luci-proto-ipip",
 		"vxlan", "luci-proto-vxlan",
-		"-wpad-basic-wolfssl", "wpad-openssl",
+		"-wpad-basic-mbedtls", "wpad-openssl",
 		"ddns-scripts", "luci-app-ddns",
+		"https-dns-proxy", "luci-app-https-dns-proxy",
+		"kmod-usb-storage", "block-mount", "usbutils", "kmod-fs-vfat", "kmod-fs-ext4",
+		"luci-app-statistics", "collectd-mod-conntrack", "collectd-mod-cpu", "collectd-mod-cpufreq", "collectd-mod-df", "collectd-mod-dhcpleases", "collectd-mod-disk", "collectd-mod-interface", "collectd-mod-irq", "collectd-mod-iwinfo", "collectd-mod-load", "collectd-mod-memory", "collectd-mod-netlink", "collectd-mod-network", "collectd-mod-ping", "collectd-mod-sqm", "collectd-mod-tcpconns", "collectd-mod-thermal", "collectd-mod-uptime", "collectd-mod-users", "collectd-mod-wireless",
 		"miniupnpc",
 		"qosify",
-		"usteer",
+		"usteer", "luci-app-usteer",
 		"umdns",
-		"tcpdump", "iperf3", "ss", "knot-host", "knot-dig", "curl", "tc-full", "ip-full", "iw-full",
+		"tcpdump", "iperf3", "ss", "bind-host", "bind-dig", "curl", "tc-full", "ip-full", "iw-full",
 		"nano", "htop", "ncdu", "xxd", "strace", "htop", "jq", "netcat", "nmap", "mtr",
-		"conntrack", "iputils-ping", "iputils-arping", "socat", "ip-bridge",
-		"muninlite",
-		"prometheus-node-exporter-lua", "prometheus-node-exporter-lua-wifi", "prometheus-node-exporter-lua-wifi_stations",
-		"prometheus-node-exporter-lua-openwrt", "prometheus-node-exporter-lua-uci_dhcp_host",
+		"conntrack", "iputils-ping", "iputils-arping", "socat", "ip-bridge", "openssh-sftp-server",
+		"luasocket", "luci-lib-json", "luci-lib-httpclient",
 	}
 	devices = [][2]string{
 		{"ipq40xx/mikrotik", "mikrotik_hap-ac2"},
@@ -63,12 +67,20 @@ var (
 			"-ath10k-firmware-qca988x-ct", "ath10k-firmware-qca988x",
 			"-kmod-ath10k-ct", "kmod-ath10k",
 		},
+		{"mediatek/mt7622", "linksys_e8450-ubi"}: {
+			"-luci-app-wireguard", // part of luci-proto-wireguard in snapshot
+		},
 	}
 	snapshotTargets = map[string]bool{
-		"ipq40xx/mikrotik": true, // DSA
+		"mediatek/mt7622": true,
 	}
 	snapshotReleaseTargets = map[string]bool{}
 )
+
+// WARNING ABOUT E8450
+// - https://git.openwrt.org/?p=openwrt/openwrt.git;a=commit;h=6aec3c7b5bf5e5a999a12121dfa71963afb6f003
+// - https://github.com/dangowrt/owrt-ubi-installer/releases/tag/v1.1.0
+// - when upgrading from older release, backup old stock with `mount -o ro ubi0:boot_backup /mnt -t ubifs`, force-sysupgrade ubi-initramfs-recovery-installer.itb, then flash new snapshot or 24.x build
 
 func main() {
 	if len(os.Args) == 2 && os.Args[1] == "openwrt_defconfig_packages" {
@@ -225,6 +237,7 @@ func asu1(ctx context.Context, ch chan any, version, target, profile string, pac
 			case string:
 				ch <- v
 			case error:
+				os.WriteFile("error.json", []byte(obj.Orig), 0644)
 				ch <- fmt.Errorf("build failed: %w", v)
 				return
 			default:
@@ -260,7 +273,7 @@ func asu1(ctx context.Context, ch chan any, version, target, profile string, pac
 
 		ch <- fmt.Sprintf("downloading [%d/%d] %s", i+1, len(res.Images), x.Name)
 
-		req, err := http.NewRequestWithContext(ctx, http.MethodGet, server+"/store/"+res.BinDir+"/"+x.Name, nil)
+		req, err := http.NewRequestWithContext(ctx, http.MethodGet, serverStore+"/"+res.BinDir+"/"+x.Name, nil)
 		if err != nil {
 			ch <- fmt.Errorf("download %s: %w", x.Name, err)
 			return
@@ -335,20 +348,20 @@ func asu1(ctx context.Context, ch chan any, version, target, profile string, pac
 }
 
 type BuildRequest struct {
-	Version      string   `json:"version"`
-	Profile      string   `json:"profile"`
-	Target       string   `json:"target"`
-	Packages     []string `json:"packages"`
-	DiffPackages bool     `json:"diff_packages"`
-	Defaults     string   `json:"defaults"`
+	Version  string   `json:"version"`
+	Profile  string   `json:"profile"`
+	Target   string   `json:"target"`
+	Packages []string `json:"packages"`
+	Defaults string   `json:"defaults"`
 }
 
 type BuildStatus struct {
-	Detail      string `json:"detail"`
-	EnqueuedAt  string `json:"enqueued_at"`
-	RequestHash string `json:"request_hash"`
-	Status      int    `json:"status"`
-	Type        string `json:"type"`
+	Detail      string          `json:"detail"`
+	EnqueuedAt  string          `json:"enqueued_at"`
+	RequestHash string          `json:"request_hash"`
+	Status      int             `json:"status"`
+	Type        string          `json:"type"`
+	Orig        json.RawMessage `json:"-"`
 }
 
 func (s BuildStatus) String() string {
@@ -400,12 +413,12 @@ type BuildResponse struct {
 }
 
 func asu1req(ctx context.Context, version, target, profile string, packages ...string) (any, error) {
+	// note: https://github.com/openwrt/asu/issues/626
 	buf, err := json.Marshal(BuildRequest{
-		Version:      version,
-		Profile:      profile,
-		Target:       target,
-		Packages:     packages,
-		DiffPackages: true,
+		Version:  version,
+		Profile:  profile,
+		Target:   target,
+		Packages: packages,
 	})
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, server+"/api/v1/build", bytes.NewReader(buf))
@@ -456,6 +469,7 @@ func asu1resp(status int, body io.Reader) (any, error) {
 		if err := json.Unmarshal(buf, &obj); err != nil {
 			return "", err
 		}
+		obj.Orig = json.RawMessage(buf)
 		return &obj, nil
 	}
 }
